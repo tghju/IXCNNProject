@@ -5,23 +5,23 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 # ============================================================
-# REAL CNN STARTER CODE
-#
+# USING REAL CNN STARTER CODE
+# https://www.kaggle.com/datasets/misrakahmed/vegetable-image-dataset
 # Goal:
 # Train a real CNN to classify circles and squares.
 #
 # Expected folder structure:
 #
-# data/
+# data/ (total 2800)
 #     train/
-#         circles/
-#         squares/
+#         broccoli/ (1000)
+#         cauliflower/ (1000)
 #     val/
-#         circles/
-#         squares/
+#         broccoli/ (200)
+#         cauliflower/ (200)
 #     test/
-#         circles/
-#         squares/
+#         broccoli/ (200)
+#         cauliflower/ (200)
 # ============================================================
 
 # ============================================================
@@ -33,10 +33,10 @@ from torchvision import datasets, transforms
 # ============================================================
 
 DATA_DIR = "data"
-IMAGE_SIZE = 64
-BATCH_SIZE = 32
-EPOCHS = 10
-LEARNING_RATE = 0.001
+IMAGE_SIZE = 224 # original: 64
+BATCH_SIZE = 32 # 32
+EPOCHS = 25 # 10
+LEARNING_RATE = 0.0005 # 0.001
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -54,7 +54,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # ============================================================
 
 transform = transforms.Compose([
-    transforms.Grayscale(num_output_channels=1),
+    #transforms.Grayscale(num_output_channels=1), # Probably still helps because the green is much darker than white
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     transforms.ToTensor(),
 ])
@@ -102,9 +102,33 @@ print("Classes:", train_dataset.classes)
 class SimpleCNN(nn.Module):
     def __init__(self):
         super().__init__()
+    # use ctrl + / to uncomment original code (still works pretty well)
+    #     self.features = nn.Sequential(
+    #         nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3, padding=1),
+    #         nn.ReLU(),
+    #         nn.MaxPool2d(kernel_size=2),
 
+    #         nn.Conv2d(in_channels=8, out_channels=16, kernel_size=3, padding=1),
+    #         nn.ReLU(),
+    #         nn.MaxPool2d(kernel_size=2),
+    #     )
+
+    #     flattened_size = 16 * (IMAGE_SIZE // 4) * (IMAGE_SIZE // 4)
+
+    #     self.classifier = nn.Sequential(
+    #         nn.Flatten(),
+    #         nn.Linear(flattened_size, 32),
+    #         nn.ReLU(),
+    #         nn.Linear(32, 2)
+    #     )
+
+    # def forward(self, x):
+    #     x = self.features(x)
+    #     x = self.classifier(x)
+    #     return x
+        # New code for also considering color
         self.features = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3, padding=1),
+            nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3, padding=1),  # Changed from 1 to 3
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
 
@@ -126,7 +150,6 @@ class SimpleCNN(nn.Module):
         x = self.features(x)
         x = self.classifier(x)
         return x
-
 
 model = SimpleCNN().to(DEVICE)
 print(model)
@@ -268,6 +291,7 @@ test_loss, test_acc = evaluate(model, test_loader, loss_fn)
 print("\nFinal test results")
 print(f"Test loss: {test_loss:.4f}")
 print(f"Test accuracy: {test_acc:.4f}")
+print(f"Potential number of misclassified images: {int((1 - test_acc) * len(test_dataset))}/{len(test_dataset)}")
 
 
 # ============================================================
