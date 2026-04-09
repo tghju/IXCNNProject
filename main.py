@@ -102,33 +102,9 @@ print("Classes:", train_dataset.classes)
 class SimpleCNN(nn.Module):
     def __init__(self):
         super().__init__()
-    # use ctrl + / to uncomment original code (still works pretty well)
-    #     self.features = nn.Sequential(
-    #         nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3, padding=1),
-    #         nn.ReLU(),
-    #         nn.MaxPool2d(kernel_size=2),
-
-    #         nn.Conv2d(in_channels=8, out_channels=16, kernel_size=3, padding=1),
-    #         nn.ReLU(),
-    #         nn.MaxPool2d(kernel_size=2),
-    #     )
-
-    #     flattened_size = 16 * (IMAGE_SIZE // 4) * (IMAGE_SIZE // 4)
-
-    #     self.classifier = nn.Sequential(
-    #         nn.Flatten(),
-    #         nn.Linear(flattened_size, 32),
-    #         nn.ReLU(),
-    #         nn.Linear(32, 2)
-    #     )
-
-    # def forward(self, x):
-    #     x = self.features(x)
-    #     x = self.classifier(x)
-    #     return x
-        # New code for also considering color
+            # use ctrl + / to comment  code 
         self.features = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3, padding=1),  # Changed from 1 to 3
+            nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3, padding=1),  # Changed in_channels 1 to 3
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
 
