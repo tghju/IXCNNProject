@@ -1,0 +1,1 @@
+My CNN tries to differentiate between broccoli and cauliflower. It likely used the differences in shading and the texture of the crown to separate the two otherwise similar vegetables. I later removed the grayscale so that color would also be taken into account. The images were taken from an already made dataset which provided lots of training data.
