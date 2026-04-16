@@ -12,7 +12,7 @@ from torchvision import datasets, transforms
 #
 # Expected folder structure:
 #
-# data/ (total 2800)
+# data/ (total 2800, 1400 each)
 #     train/
 #         broccoli/ (1000)
 #         cauliflower/ (1000)
@@ -33,14 +33,15 @@ from torchvision import datasets, transforms
 # ============================================================
 
 DATA_DIR = "data"
-IMAGE_SIZE = 224 # original: 64
-BATCH_SIZE = 32 # 32
-EPOCHS = 25 # 10
-LEARNING_RATE = 0.0005 # 0.001
+IMAGE_SIZE = 224 # original: 64, pretty good: 224, other tried: 224
+BATCH_SIZE = 32 # 32, 32, 8
+EPOCHS = 25 # 10, 25, 40
+LEARNING_RATE = 0.0005 # 0.001, 0.0005, 0.0001
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-
+# Best test accuracy so far: 0.9950
+# Best val accuracy so far: 0.9950
 # ============================================================
 # SECTION 2: TRANSFORMS
 #
